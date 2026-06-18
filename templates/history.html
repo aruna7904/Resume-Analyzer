@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 max-w-4xl mx-auto">
+    <h2 class="text-xl font-black text-slate-800 mb-2">Historical Assessment Matrix</h2>
+    <p class="text-xs text-slate-400 mb-6">Review system pipeline evaluations run previously on this instance.</p>
+    
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse text-sm">
+            <thead>
+                <tr class="border-b border-slate-200 text-slate-400 text-xs font-bold tracking-widest uppercase">
+                    <th class="pb-3">Target Blueprint Context</th>
+                    <th class="pb-3 text-center">ATS Profile Match</th>
+                    <th class="pb-3">Analysis Date</th>
+                    <th class="pb-3 text-right">Action Vector</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 text-slate-700 font-medium">
+                {% for log in history %}
+                <tr class="hover:bg-slate-50/80 transition">
+                    <td class="py-4 font-bold text-slate-900">{{ log.job_title }}</td>
+                    <td class="py-4 text-center">
+                        <span class="font-bold px-2.5 py-1 rounded-md bg-indigo-50 text-indigo-700 text-xs">
+                            {{ log.ats_score }}%
+                        </span>
+                    </td>
+                    <td class="py-4 text-xs text-slate-400">{{ log.analyzed_at }}</td>
+                    <td class="py-4 text-right">
+                        <a href="/dashboard/{{ log.analysis_id }}" class="text-indigo-600 hover:text-indigo-900 hover:underline text-xs font-bold">Inspect Dashboard</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" class="py-12 text-center text-slate-400 italic text-xs">
+                        No pipelines have run on this deployment structure yet.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

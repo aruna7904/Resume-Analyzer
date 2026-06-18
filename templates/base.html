@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Resume Analyzer Agent</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-slate-50 font-sans text-slate-900 min-h-screen flex flex-col">
+    <nav class="bg-slate-900 text-white shadow-xl">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/" class="text-lg font-black tracking-wider text-indigo-400">🤖 RESUME_AGENT.AI</a>
+            <div class="space-x-6 text-sm font-medium">
+                <a href="/" class="hover:text-indigo-400 transition">Pipeline Workspace</a>
+                <a href="/history" class="hover:text-indigo-400 transition">Audit Logs</a>
+            </div>
+        </div>
+    </nav>
+    <main class="flex-grow max-w-7xl w-full mx-auto p-6 md:p-10">
+        {% block content %}{% endblock %}
+    </main>
+    <footer class="bg-slate-900 text-slate-500 text-center py-4 text-xs border-t border-slate-800">
+        Capstone Ecosystem &copy; 2026 Engine Instance
+    </footer>
+</body>
+</html>

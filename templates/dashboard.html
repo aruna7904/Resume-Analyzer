@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="space-y-8">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center bg-white p-6 rounded-2xl shadow-sm border border-slate-200 gap-4">
+        <div>
+            <span class="text-[10px] font-black text-indigo-600 tracking-widest uppercase">Target Vector Profile</span>
+            <h2 class="text-2xl font-black text-slate-900">{{ report.job_title }}</h2>
+            <p class="text-xs text-slate-400">Timestamp Index: {{ report.analyzed_at }}</p>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 px-6 py-4 rounded-xl text-center min-w-[140px]">
+            <span class="block text-3xl font-black text-slate-800">{{ report.ats_score }}%</span>
+            <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">ATS Integrity Rating</span>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2 space-y-8">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-3 mb-4">Tailored Professional Summary Recommendation</h3>
+                <p class="text-slate-600 text-sm leading-relaxed whitespace-pre-line bg-slate-50 p-4 rounded-xl border border-slate-100 italic">"{{ report.summary }}"</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-3 mb-4">Optimization Action Items Roadmap</h3>
+                <div class="text-slate-600 text-sm leading-relaxed whitespace-pre-line font-mono bg-slate-900 text-emerald-400 p-4 rounded-xl shadow-inner text-xs">
+                    {{ report.suggestions }}
+                </div>
+            </div>
+        </div>
+
+        <div class="space-y-8">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <h3 class="text-xs font-black text-emerald-700 tracking-wider uppercase mb-4 block">Matched Skills Found</h3>
+                <div class="flex flex-wrap gap-2">
+                    {% for item in report.skills_found %}
+                        <span class="bg-emerald-50 text-emerald-700 text-xs font-semibold px-3 py-1.5 rounded-lg border border-emerald-200/60">✓ {{ item }}</span>
+                    {% else %}
+                        <span class="text-slate-400 text-xs italic">Zero matching key terms identified.</span>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <h3 class="text-xs font-black text-rose-700 tracking-wider uppercase mb-4 block">Critical Skill Gaps Identified</h3>
+                <div class="flex flex-wrap gap-2">
+                    {% for item in report.missing_skills %}
+                        <span class="bg-rose-50 text-rose-700 text-xs font-semibold px-3 py-1.5 rounded-lg border border-rose-200/60">⚠️ {{ item }}</span>
+                    {% else %}
+                        <span class="text-emerald-600 text-xs font-semibold italic">Complete Skill Matrix Alignment Met!</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

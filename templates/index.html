@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+    <h2 class="text-2xl font-black text-slate-800 mb-1">Optimizing Evaluation Engine</h2>
+    <p class="text-sm text-slate-500 mb-6">Upload credentials portfolio against corporate target benchmarks below.</p>
+    
+    <form id="agentUploadForm" class="space-y-6">
+        <div>
+            <label class="block text-xs font-bold tracking-wider text-slate-700 uppercase mb-2">Upload Profile Document (PDF Only)</label>
+            <input type="file" name="resume" id="resumeFile" accept=".pdf" required
+                class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 border border-slate-200 rounded-xl p-2 bg-slate-50">
+        </div>
+
+        <div>
+            <label class="block text-xs font-bold tracking-wider text-slate-700 uppercase mb-2">Corporate Target Description Matrix</label>
+            <textarea name="job_description" id="jobDesc" rows="8" placeholder="Paste structural text details requirements verbatim..." required
+                class="w-full rounded-xl border border-slate-200 p-4 text-sm focus:outline-none focus:border-indigo-500 bg-slate-50 shadow-inner"></textarea>
+        </div>
+
+        <div id="errorNotification" class="hidden text-rose-600 bg-rose-50 border border-rose-200 p-4 rounded-xl text-xs font-bold"></div>
+
+        <button type="submit" id="submitAction"
+            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold py-4 rounded-xl shadow-lg shadow-indigo-100 transition flex justify-center items-center gap-3 cursor-pointer">
+            <span id="btnLabel">Run Analysis Pipeline</span>
+            <span id="loadingIndicator" class="hidden border-2 border-white border-t-transparent rounded-full w-4 h-4 animate-spin"></span>
+        </button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('agentUploadForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const actionBtn = document.getElementById('submitAction');
+        const label = document.getElementById('btnLabel');
+        const loader = document.getElementById('loadingIndicator');
+        const logsBox = document.getElementById('errorNotification');
+
+        actionBtn.disabled = true;
+        label.textContent = "Processing Extraction Engine...";
+        loader.classList.remove('hidden');
+        logsBox.classList.add('hidden');
+
+        const packaging = new FormData();
+        packaging.append('resume', document.getElementById('resumeFile').files[0]);
+        packaging.append('job_description', document.getElementById('jobDesc').value);
+
+        try {
+            const endpoint = await fetch('/analyze', { method: 'POST', body: packaging });
+            const parsePayload = await endpoint.json();
+            
+            if (endpoint.ok && parsePayload.success) {
+                window.location.href = `/dashboard/${parsePayload.analysis_id}`;
+            } else {
+                throw new Error(parsePayload.error || "System Optimization Run Pipeline fault.");
+            }
+        } catch (error) {
+            logsBox.textContent = error.message;
+            logsBox.classList.remove('hidden');
+            actionBtn.disabled = false;
+            label.textContent = "Run Analysis Pipeline";
+            loader.classList.add('hidden');
+        }
+    });
+</script>
+{% endblock %}
